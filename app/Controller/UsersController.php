@@ -18,7 +18,7 @@ class UsersController extends AppController
 
     public function beforeFilter()
     {
-        $this->Auth->allow('register', 'add');
+        $this->Auth->allow('register');
     }
 
     public function login()
@@ -33,7 +33,10 @@ class UsersController extends AppController
 
     public function logout()
     {
+		$this->Auth->logout();
+        return $this->redirect(array('action' => 'index'));
 
+		// $this->redirect('/login');
     }
 
 /**
@@ -68,10 +71,13 @@ class UsersController extends AppController
  *
  * @return void
  */
-    public function add()
+    public function register()
     {
         if ($this->request->is('post')) {
             $this->User->create();
+
+			// pr($this->request->data);
+			// return;
 
             //hash password
             $this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
