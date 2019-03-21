@@ -33,12 +33,11 @@ class UsersController extends AppController
 
     public function logout()
     {
-		$this->Auth->logout();
+        $this->Auth->logout();
         return $this->redirect(array('action' => 'index'));
 
-		// $this->redirect('/login');
+        // $this->redirect('/login');
     }
-
 /**
  * index method
  *
@@ -74,10 +73,11 @@ class UsersController extends AppController
     public function register()
     {
         if ($this->request->is('post')) {
+
             $this->User->create();
 
-			// pr($this->request->data);
-			// return;
+            // pr($this->request->data);
+            // return;
 
             //hash password
             $this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
@@ -88,6 +88,12 @@ class UsersController extends AppController
             } else {
                 $this->Flash->error(__('The user could not be saved. Please, try again.'));
             }
+        }
+
+        //if already logged in, redirect to home
+        if ($this->Auth->user()) {
+            return $this->redirect(array('action' => 'home'));
+
         }
     }
 

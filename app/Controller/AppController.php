@@ -32,6 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller
 {
+    public $helpers = array('Js' => array('Jquery'));
 
     public $components = [
         'Session', 'Auth', 'Flash',
