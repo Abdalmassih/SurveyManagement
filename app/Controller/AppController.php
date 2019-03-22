@@ -32,9 +32,9 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller
 {
-    public $helpers = array('Js' => array('Jquery'));
+    public $helpers = ['Js']; //triggers jQuery helper by default
 
     public $components = [
-        'Session', 'Auth', 'Flash',
+        'Session', 'Auth', 'Flash', 'RequestHandler',
     ];
 }

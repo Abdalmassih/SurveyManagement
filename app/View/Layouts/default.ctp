@@ -14,7 +14,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
+// $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
 $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
@@ -41,9 +41,7 @@ echo $this->Html->script('jquery'); // Include jQuery library
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'https://cakephp.org'); ?></h1>
-		</div>
+
 		<div id="content">
 
 			<?php echo $this->Flash->render(); ?>
@@ -51,15 +49,8 @@ echo $this->Html->script('jquery'); // Include jQuery library
 			<?php echo $this->fetch('content'); ?>
 		</div>
 		<div id="footer">
-			<?php echo $this->Html->link(
-    $this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-    'https://cakephp.org/',
-    array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-);
-?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
+
+
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>

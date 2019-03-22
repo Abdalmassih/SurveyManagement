@@ -17,7 +17,7 @@ class SurveysController extends AppController
 
     public function index()
     {
-		//check user logged in
+        //check user logged in
         if (!$this->Auth->user()) {
             return $this->redirect(array('controller' => 'users', 'action' => 'login'));
         }
@@ -35,19 +35,38 @@ class SurveysController extends AppController
 
         if ($this->request->is('post')) {
 
-            $this->User->create();
+            $this->Survey->create();
 
             // pr($this->request->data);
             // return;
 
-            //hash password
-            $this->request->data['User']['password'] = AuthComponent::password($this->request->data['User']['password']);
+            if ($this->Survey->save($this->request->data)) {
 
-            if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                if ($this->RequestHandler->isAjax()) {
+                    $this->render('success', 'ajax');
+                } else {
+
+                    $this->Flash->success(__('The survey has been saved.'));
+                    return $this->redirect(array('action' => 'index'));
+                }
             } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                $this->Flash->error(__('The survey could not be saved. Please, try again.'));
+            }
+        }
+    }
+
+    public function validateForm()
+    {
+        if ($this->RequestHandler->isAjax()) {
+			// pr($this->request->data);
+			$this->request->data['Survey'][$this->params['data']['field']] = $this->params['data']['value'];
+            $this->Survey->set($this->request->data);
+            if ($this->Survey->validates()) {
+				$this->autoRender = false;
+            } else {
+				$error = $this->validateErrors($this->Survey);
+				// pr($error['title']);
+                $this->set('error', $error[$this->params['data']['field']][0]);
             }
         }
     }

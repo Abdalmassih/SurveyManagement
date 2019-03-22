@@ -24,7 +24,7 @@ class Survey extends AppModel {
 		'title' => array(
 			'minLength' => array(
 				'rule' => array('minLength', '3'),
-				//'message' => 'Your custom message here',
+				'message' => 'title should be 3 characters at least!',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
