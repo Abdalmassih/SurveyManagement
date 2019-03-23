@@ -36,6 +36,7 @@
 			html.push(elem.question);
 			html.push("</div>");
 		} else {
+			//determine question type (yes/no/root)
 			var type = elem.type
 				? elem.type == "y"
 					? '<div style="background-color: green; color: white"> Yes </div>'
@@ -43,7 +44,12 @@
 				: "";
 
 			html.push(
-				'<div class="hortree-label q">' + type + elem.question + "</div>"
+				'<div class="hortree-label q" id="' +
+					elem.id +
+					'">' +
+					type +
+					elem.question +
+					"</div>"
 			);
 		}
 

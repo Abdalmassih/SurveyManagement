@@ -19,13 +19,13 @@
     <button id="qform-close" class="btn btn-danger" style="float: right; height: 20px; width: 20px">&times;</button>
     <form action="/action_page.php">
         Question:<br>
-        <input type="text" name="q" placeholder="Enter a question...">
+        <input type="text" id="qtext" placeholder="Enter a question...">
         <br><br>
         Next Question on "YES":<br>
-        <input type="text" name="yq" placeholder="Enter a &quot;YES&quot; question...">
+        <input type="text" id="yq" placeholder="Enter a &quot;YES&quot; question...">
         <br><br>
         Next Question on "NO":<br>
-        <input type="text" name="nq" placeholder="Enter a &quot;NO&quot; question...">
+        <input type="text" id="nq" placeholder="Enter a &quot;NO&quot; question...">
         <br><br><br>
         <input type="submit" value="Submit">
     </form>
