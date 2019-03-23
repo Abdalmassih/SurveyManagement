@@ -3,33 +3,39 @@
 <?php echo $this->Html->script('jquery.line'); ?>
 <?php echo $this->Html->css('jquery.hortree'); ?>
 
-
-<div id="questions" style=""></div>
+<div id="questions" style="z-index: -1;"></div>
 <br>
 
 <div class="qform"
 	 style="
-	margin: auto;
-    width: 60%;
+    width: 80%;
     padding: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	display: none;
-	z-index: 1;
+	position:absolute;
+	left:0;
+right:0;
+margin-left:auto;
+margin-right:auto;
+  top: 50px;
+  background-color: powderblue;
+	z-index: 100;
 	">
     <button id="qform-close" class="btn btn-danger" style="float: right; height: 20px; width: 20px">&times;</button>
     <form action="/action_page.php">
         Question:<br>
-        <input type="text" id="qtext" placeholder="Enter a question...">
+        <textarea id="qtext" placeholder="Enter a question..." autofocus></textarea>
         <br><br>
         Next Question on "YES":<br>
-        <input type="text" id="yq" placeholder="Enter a &quot;YES&quot; question...">
+        <textarea id="yq" placeholder="Enter a &quot;YES&quot; question..."></textarea>
         <br><br>
         Next Question on "NO":<br>
-        <input type="text" id="nq" placeholder="Enter a &quot;NO&quot; question...">
+        <textarea  id="nq" placeholder="Enter a &quot;NO&quot; question..."></textarea>
         <br><br><br>
-        <input type="submit" value="Submit">
+        <input type="button" id="save-q" value="Save">
     </form>
 </div>
+
 
 <div id="success"></div>
 <div class="surveys form">

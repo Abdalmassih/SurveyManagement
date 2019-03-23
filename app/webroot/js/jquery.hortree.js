@@ -44,7 +44,7 @@
 				: "";
 
 			html.push(
-				'<div class="hortree-label q" id="' +
+				'<div class="hortree-label q" style="min-width: 25px; min-height: 15px;" id="' +
 					elem.id +
 					'">' +
 					type +
