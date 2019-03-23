@@ -8,33 +8,21 @@ $(document).ready(function() {
 		);
 	});
 
-
 	let questions = {
-		question: "Add your first question!",
-		tooltip: "tooltip is optional",
-		children: [
-			{
-				question: "Element 1",
-				children: [
-					{
-						question: "Element 1.1",
-						children: []
-					},
-					{
-						question: "Element 1.2",
-						children: [
-							{
-								question: "Element 1.2.1",
-								children: []
-							}
-						]
-					}
-				]
-			}
-		]
+		question: "What's your first question?",
+		id: 1,
+		children: []
 	};
 
 	renderTree(questions);
+
+	//new/edit question form
+	$(".q").click(function() {
+		$(".qform").show();
+	});
+	$("#qform-close").click(function() {
+		$(".qform").hide();
+	});
 
 	function renderTree(questions) {
 		$("#questions").hortree({

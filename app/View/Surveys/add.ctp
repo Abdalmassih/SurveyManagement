@@ -7,6 +7,30 @@
 <div id="questions" style=""></div>
 <br>
 
+<div class="qform"
+	 style="
+	margin: auto;
+    width: 60%;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	display: none;
+	z-index: 1;
+	">
+    <button id="qform-close" class="btn btn-danger" style="float: right; height: 20px; width: 20px">&times;</button>
+    <form action="/action_page.php">
+        Question:<br>
+        <input type="text" name="q" placeholder="Enter a question...">
+        <br><br>
+        Next Question on "YES":<br>
+        <input type="text" name="yq" placeholder="Enter a &quot;YES&quot; question...">
+        <br><br>
+        Next Question on "NO":<br>
+        <input type="text" name="nq" placeholder="Enter a &quot;NO&quot; question...">
+        <br><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
 <div id="success"></div>
 <div class="surveys form">
 <?php echo $this->Form->create('Survey'); ?>
@@ -40,4 +64,5 @@ echo $this->Form->input('title', ['id' => 'title']);
 	</ul>
 </div>
 
-<button id="addQ">Add Question</button>
+<!-- <button id="addQ">Add Question</button> -->
+

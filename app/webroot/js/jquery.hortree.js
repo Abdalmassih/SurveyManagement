@@ -6,232 +6,228 @@
  *  Made by Alessandro Mitelli
  *  Under MIT License
  */
-;(function ($, window, document, undefined) {
+(function($, window, document, undefined) {
+	"use strict";
 
-    "use strict";
+	var entryIdIndex = 0;
 
-    var entryIdIndex = 0;
+	function branch(list) {
+		var html = [];
+		html.push('<div class="hortree-branch">');
+		$(list).each(function() {
+			html.push(branchList(this));
+		});
+		html.push("</div>");
+		return html.join("\n");
+	}
 
-    function branch(list) {
-        var html = [];
-        html.push('<div class="hortree-branch">');
-        $(list).each(function () {
-            html.push(branchList(this));
-        });
-        html.push('</div>');
-        return html.join("\n");
-    }
+	function branchList(elem) {
+		entryIdIndex++;
+		var html = [];
+		html.push(
+			'<div class="hortree-entry" data-entry-id="' + entryIdIndex + '">'
+		);
 
-    function branchList(elem) {
-        entryIdIndex++;
-        var html = [];
-        html.push('<div class="hortree-entry" data-entry-id="' + entryIdIndex + '">');
+		if (elem.tooltip && elem.tooltip.toString().trim() !== "") {
+			html.push('<div class="hortree-label hortree-tooltip">');
+			html.push(
+				'<span class="hortree-tooltip-text">' + elem.tooltip + "</span>"
+			);
+			html.push(elem.question);
+			html.push("</div>");
+		} else {
+			var type = elem.type
+				? elem.type == "y"
+					? '<div style="background-color: green; color: white"> Yes </div>'
+					: '<div style="background-color: red; color: white"> No </div>'
+				: "";
 
-        if (elem.tooltip && elem.tooltip.toString().trim() !== '') {
+			html.push(
+				'<div class="hortree-label q">' + type + elem.question + "</div>"
+			);
+		}
 
-            html.push('<div class="hortree-label hortree-tooltip">');
-            html.push('<span class="hortree-tooltip-text">' + elem.tooltip + '</span>');
-            html.push(elem.question);
-            html.push('</div>');
+		if (elem.children.length) {
+			html.push(branch(elem.children));
+		}
 
-        } else {
+		html.push("</div>");
 
-            html.push('<div class="hortree-label">' + elem.question + '</div>');
+		return html.join("\n");
+	}
 
-        }
+	/**
+	 * prevent entries overlap:
+	 * each branch height should be equal to the total heights of its children entries
+	 */
+	function assignBranchHeight() {
+		// get entries unsorted
+		var unsortedEntries = [];
+		$(".hortree-entry").each(function() {
+			var entryId = $(this).attr("data-entry-id");
+			unsortedEntries.push({
+				entryId: parseInt(entryId),
+				entry: $(this)
+			});
+		});
 
-        if (elem.children.length) {
-            html.push(branch(elem.children));
-        }
+		// sort entries by rendering order
+		var entries = unsortedEntries.slice(0);
+		entries.sort(function(a, b) {
+			return a.entryId - b.entryId;
+		});
 
-        html.push('</div>');
+		// get it in reverse order
+		entries.reverse();
 
-        return html.join("\n");
-    }
+		// iterate each entry
+		for (var i = 0; i < entries.length; i++) {
+			var entry = entries[i].entry;
+			var children = entry.children(".hortree-branch");
 
-    /**
-     * prevent entries overlap:
-     * each branch height should be equal to the total heights of its children entries
-     */
-    function assignBranchHeight() {
+			// if this entry has a branch (it has children entries)
+			if (!!children.length) {
+				// sum each child entry height
+				var h = 0;
+				children.each(function() {
+					h += $(this).height();
+				});
 
-        // get entries unsorted
-        var unsortedEntries = [];
-        $('.hortree-entry').each(function () {
-            var entryId = $(this).attr('data-entry-id');
-            unsortedEntries.push({
-                entryId: parseInt(entryId),
-                entry: $(this)
-            })
-        });
+				// and give it to the parent
+				entry.height(h);
+			}
+		}
+	}
 
-        // sort entries by rendering order
-        var entries = unsortedEntries.slice(0);
-        entries.sort(function (a, b) {
-            return a.entryId - b.entryId;
-        });
+	/**
+	 * draw lines schema between entries
+	 * @param options
+	 */
+	function drawLines(options) {
+		// get native element position
+		function getPos(el) {
+			var lx = 0,
+				ly = 0;
 
-        // get it in reverse order
-        entries.reverse();
+			while (el !== null) {
+				lx += el.offsetLeft;
+				ly += el.offsetTop;
+				el = el.offsetParent;
 
-        // iterate each entry
-        for (var i = 0; i < entries.length; i++) {
-            var entry = entries[i].entry;
-            var children = entry.children('.hortree-branch');
+				if ($(".hortree-wrapper").is(el)) {
+					break;
+				}
+			}
 
-            // if this entry has a branch (it has children entries)
-            if (!!children.length) {
+			return { x: lx, y: ly };
+		}
 
-                // sum each child entry height
-                var h = 0;
-                children.each(function () {
-                    h += $(this).height();
-                });
+		// draw lines for each hierarchical tree in the page
+		$(".hortree-wrapper").each(function() {
+			var tree = $(this);
 
-                // and give it to the parent
-                entry.height(h);
+			var offsetY = 0; // offset Y is set on first element iteration
+			var elementIndex = 0;
 
-            }
-        }
+			// iterate over entries content
+			tree.find(".hortree-label").each(function() {
+				// set Y offset pos where to render each line
+				if (elementIndex === 0) {
+					var offsetTop = $(this).offset().top;
+					offsetY = offsetTop * -1 + 20;
+				}
 
-    }
+				// if it has children then draw line
+				if (!!$(this).siblings(".hortree-branch").length) {
+					// parent position
+					var parentPos = getPos($(this).get(0));
 
-    /**
-     * draw lines schema between entries
-     * @param options
-     */
-    function drawLines(options) {
+					// get position of each child
+					$(this)
+						.siblings(".hortree-branch")
+						.children(".hortree-entry")
+						.children(".hortree-label")
+						.each(function() {
+							var childPos = getPos($(this).get(0));
 
-        // get native element position
-        function getPos(el) {
-            var lx = 0,
-                ly = 0;
+							// draw line between two points
+							tree.line(
+								parentPos.x + $(this).width() - 10,
+								parentPos.y + offsetY,
+								childPos.x,
+								childPos.y + offsetY,
+								{
+									zindex: options.lineZindex,
+									color: options.lineColor,
+									stroke: options.lineStrokeWidth
+								}
+							);
+						});
+				}
 
-            while (el !== null) {
-                lx += el.offsetLeft;
-                ly += el.offsetTop;
-                el = el.offsetParent;
+				elementIndex++;
+			});
+		});
+	}
 
-                if ($('.hortree-wrapper').is(el)) {
-                    break;
-                }
-            }
+	/**
+	 * set each entry height based on its label content
+	 */
+	function assignEntryHeight() {
+		$(".hortree-label").each(function() {
+			var h = $(this).height();
+			$(this)
+				.parent(".hortree-entry")
+				.height(h);
+		});
+	}
 
-            return {x: lx, y: ly};
-        }
+	/**
+	 * The plugin
+	 * @param opts
+	 */
+	$.fn.hortree = function(opts) {
+		opts = opts || {};
 
-        // draw lines for each hierarchical tree in the page
-        $('.hortree-wrapper').each(function () {
-            var tree = $(this);
+		// default options
+		var defaults = {
+			lineStrokeWidth: 3,
+			lineZindex: 8,
+			lineColor: "#4b86b7",
+			data: [],
+			onComplete: function() {
+				// onComplete callback
+			}
+		};
 
-            var offsetY = 0; // offset Y is set on first element iteration
-            var elementIndex = 0;
+		var options = $.extend(defaults, opts);
 
-            // iterate over entries content
-            tree.find('.hortree-label').each(function () {
+		if (!$.fn.line) {
+			throw new Error(
+				"You must load jquery.line.js library! Get it here: https://github.com/tbem/jquery.line"
+			);
+		} else if (!options.data) {
+			throw new Error("No data specified!");
+		} else if (!(options.data instanceof Array)) {
+			throw new Error("Data should be an array");
+		} else if (!options.data.length) {
+			console.warn("Data is empty");
+		}
 
-                // set Y offset pos where to render each line
-                if (elementIndex === 0) {
-                    var offsetTop = $(this).offset().top;
-                    offsetY = (offsetTop * -1) + 20;
-                }
+		var html = [];
+		html.push('<div class="hortree-wrapper">');
+		html.push(branch(options.data));
+		html.push("</div>");
 
-                // if it has children then draw line
-                if (!!$(this).siblings('.hortree-branch').length) {
+		this.html(html.join("\n"));
 
-                    // parent position
-                    var parentPos = getPos($(this).get(0));
+		assignEntryHeight();
+		assignBranchHeight();
+		drawLines(options);
 
-                    // get position of each child
-                    $(this).siblings('.hortree-branch')
-                        .children('.hortree-entry')
-                        .children('.hortree-label')
-                        .each(function () {
-
-                            var childPos = getPos($(this).get(0));
-
-                            // draw line between two points
-                            tree.line(
-                                parentPos.x + $(this).width() - 10,
-                                parentPos.y + offsetY,
-                                childPos.x,
-                                childPos.y + offsetY,
-                                {
-                                    zindex: options.lineZindex,
-                                    color: options.lineColor,
-                                    stroke: options.lineStrokeWidth
-                                });
-
-                        })
-
-                }
-
-                elementIndex++;
-
-            })
-
-        });
-    }
-
-    /**
-     * set each entry height based on its label content
-     */
-    function assignEntryHeight() {
-        $('.hortree-label').each(function () {
-            var h = $(this).height();
-            $(this).parent('.hortree-entry').height(h);
-        });
-    }
-
-    /**
-     * The plugin
-     * @param opts
-     */
-    $.fn.hortree = function (opts) {
-        opts = opts || {};
-
-        // default options
-        var defaults = {
-            lineStrokeWidth: 2,
-            lineZindex: 8,
-            lineColor: '#4b86b7',
-            data: [],
-            onComplete: function () {
-                // onComplete callback
-            }
-        };
-
-        var options = $.extend(defaults, opts);
-
-        if (!$.fn.line) {
-            throw new Error("You must load jquery.line.js library! Get it here: https://github.com/tbem/jquery.line");
-        }
-        else if (!options.data) {
-            throw new Error("No data specified!");
-        }
-        else if (!(options.data instanceof Array)) {
-            throw new Error("Data should be an array");
-        }
-        else if (!options.data.length) {
-            console.warn("Data is empty");
-        }
-
-        var html = [];
-        html.push('<div class="hortree-wrapper">');
-        html.push(branch(options.data));
-        html.push('</div>');
-
-        this.html(html.join('\n'));
-
-        assignEntryHeight();
-        assignBranchHeight();
-        drawLines(options);
-
-        // execute onComplete callback
-        if (!!options.onComplete && typeof options.onComplete === 'function') {
-            options.onComplete.apply();
-        }
-
-    }
-
+		// execute onComplete callback
+		if (!!options.onComplete && typeof options.onComplete === "function") {
+			options.onComplete.apply();
+		}
+	};
 })(jQuery, window, document);
