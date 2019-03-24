@@ -39,7 +39,7 @@
 			//determine question type (yes/no/root)
 			var type = elem.type
 				? elem.type == "y"
-					? '<div style="background-color: green; color: white"> Yes </div>'
+					? '<div style="background-color: navy; color: white"> Yes </div>'
 					: '<div style="background-color: red; color: white"> No </div>'
 				: "";
 

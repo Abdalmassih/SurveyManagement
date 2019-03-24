@@ -22,7 +22,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<?php echo $cakeDescription ?>:
+		<?php echo "Survey Management"; ?>:
 		<?php echo $this->fetch('title'); ?>
 	</title>
 	<?php
@@ -55,6 +55,6 @@ echo $this->Html->script('jquery'); // Include jQuery library
 		</div>
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
-	<?php echo $this->Js->writeBuffer(); // Write cached scripts  ?>
+	<?php echo $this->Js->writeBuffer(); // Write cached scripts   ?>
 </body>
 </html>

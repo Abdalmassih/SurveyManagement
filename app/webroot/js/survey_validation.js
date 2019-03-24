@@ -48,8 +48,17 @@ $(document).ready(function() {
 			$.post(
 				"/SurveyManagement/cakephp/surveys/add",
 				{ title: $("#title").val(), questions },
-				validateTitle
+				data => {
+					// alert(JSON.parse(data).survey_id);
+					window.location =
+						"/SurveyManagement/cakephp/surveys/view/" +
+						JSON.parse(data).survey_id;
+				}
 			);
+
+			// $.ajax({url: "/SurveyManagement/cakephp/surveys/addSurvey", success: function(result){
+			// 	window.location = "/SurveyManagement/cakephp/surveys";
+			//   }});
 		}
 	});
 

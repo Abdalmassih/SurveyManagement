@@ -33,24 +33,63 @@ class SurveysController extends AppController
             return $this->redirect(array('action' => 'index'));
         }
 
-        // $this->autoRender = false;
-
         if ($this->RequestHandler->isAjax()) {
-            // pr($this->request->data);
-            $this->Survey->create();
+            $this->autoRender = false;
 
-            pr($this->request->data);
+            $this->Survey->create();
+            $this->request->data['user_id'] = $this->Auth->user('id');
+            // pr($this->request->data);
             $savedSurvey = $this->Survey->save($this->request->data);
             // pr($savedSurvey);
-            if ($savedSurvey) {
+            if (!empty($savedSurvey)) {
+                $question = $this->request->data['questions'];
 
-                // $this->render('success', 'ajax');
+                $savedQ = $this->Survey->Question->save([
+                    'question' => $question['question'],
+                    'survey_id' => $this->Survey->id,
+                ]);
+                if (isset($question['children'][0])) {
+                    $this->saveChildQs($question['children'][0], $savedQ['Question']['id']);
+                }
+                if (isset($question['children'][1])) {
+                    $this->saveChildQs($question['children'][1], $savedQ['Question']['id']);
+                }
+
                 $this->Flash->success(__('The survey has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                // return $this->redirect(array('action' => 'index'));
+                return json_encode(array('survey_id' => $this->Survey->id));
 
             } else {
                 $this->Flash->error(__('The survey could not be saved. Please, try again.'));
             }
+        }
+    }
+
+    public function view($id = null)
+    {
+        if (!$this->Survey->exists($id)) {
+            throw new NotFoundException(__('Invalid survey'));
+        }
+        $options = array('conditions' => array('Survey.' . $this->Survey->primaryKey => $id));
+        $this->set('survey', $this->Survey->find('first', $options));
+    }
+
+    public function saveChildQs($q, $parentQId)
+    {
+        $this->Survey->Question->create();
+
+        $savedQ = $this->Survey->Question->save([
+            'question' => $q['question'],
+            'survey_id' => $this->Survey->id,
+            'on_yes_no' => $q['type'],
+            'parent_q_id' => $parentQId,
+        ]);
+
+        if (isset($q['children'][0])) {
+            $this->saveChildQs($q['children'][0], $savedQ['Question']['id']);
+        }
+        if (isset($q['children'][1])) {
+            $this->saveChildQs($q['children'][1], $savedQ['Question']['id']);
         }
     }
 

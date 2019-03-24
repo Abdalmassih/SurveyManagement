@@ -39,17 +39,13 @@
 		<th><?php echo __('Id'); ?></th>
 		<th><?php echo __('Survey Id'); ?></th>
 		<th><?php echo __('Text'); ?></th>
-		<th><?php echo __('Yes Next Q Id'); ?></th>
-		<th><?php echo __('No Next Q Id'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($survey['Question'] as $question): ?>
 		<tr>
 			<td><?php echo $question['id']; ?></td>
 			<td><?php echo $question['survey_id']; ?></td>
-			<td><?php echo $question['text']; ?></td>
-			<td><?php echo $question['yes_next_q_id']; ?></td>
-			<td><?php echo $question['no_next_q_id']; ?></td>
+			<td><?php echo $question['question']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'questions', 'action' => 'view', $question['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'questions', 'action' => 'edit', $question['id'])); ?>
