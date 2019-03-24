@@ -33,22 +33,21 @@ class SurveysController extends AppController
             return $this->redirect(array('action' => 'index'));
         }
 
-        if ($this->request->is('post')) {
+        // $this->autoRender = false;
 
+        if ($this->RequestHandler->isAjax()) {
+            // pr($this->request->data);
             $this->Survey->create();
 
-            // pr($this->request->data);
-            // return;
+            pr($this->request->data);
+            $savedSurvey = $this->Survey->save($this->request->data);
+            // pr($savedSurvey);
+            if ($savedSurvey) {
 
-            if ($this->Survey->save($this->request->data)) {
+                // $this->render('success', 'ajax');
+                $this->Flash->success(__('The survey has been saved.'));
+                return $this->redirect(array('action' => 'index'));
 
-                if ($this->RequestHandler->isAjax()) {
-                    $this->render('success', 'ajax');
-                } else {
-
-                    $this->Flash->success(__('The survey has been saved.'));
-                    return $this->redirect(array('action' => 'index'));
-                }
             } else {
                 $this->Flash->error(__('The survey could not be saved. Please, try again.'));
             }
@@ -58,14 +57,14 @@ class SurveysController extends AppController
     public function validateForm()
     {
         if ($this->RequestHandler->isAjax()) {
-			// pr($this->request->data);
-			$this->request->data['Survey'][$this->params['data']['field']] = $this->params['data']['value'];
+            // pr($this->request->data);
+            $this->request->data['Survey'][$this->params['data']['field']] = $this->params['data']['value'];
             $this->Survey->set($this->request->data);
             if ($this->Survey->validates()) {
-				$this->autoRender = false;
+                $this->autoRender = false;
             } else {
-				$error = $this->validateErrors($this->Survey);
-				// pr($error['title']);
+                $error = $this->validateErrors($this->Survey);
+                // pr($error['title']);
                 $this->set('error', $error[$this->params['data']['field']][0]);
             }
         }

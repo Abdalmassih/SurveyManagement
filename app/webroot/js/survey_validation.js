@@ -1,5 +1,7 @@
 $(document).ready(function() {
-	// alert('hi!');
+	// alert('test!');
+
+	//title validation
 	$("#title").blur(() => {
 		$.post(
 			"/SurveyManagement/cakephp/surveys/validateForm",
@@ -38,6 +40,17 @@ $(document).ready(function() {
 
 	$("#qform-close").click(function() {
 		$(".qform").hide();
+	});
+
+	$("#submit").click(() => {
+		// alert($("#title").val())
+		if ($("#title").val().length >= 3) {
+			$.post(
+				"/SurveyManagement/cakephp/surveys/add",
+				{ title: $("#title").val(), questions },
+				validateTitle
+			);
+		}
 	});
 
 	function renderTree(questions) {

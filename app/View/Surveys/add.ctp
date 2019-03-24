@@ -37,7 +37,7 @@ margin-right:auto;
 </div>
 
 
-<div id="success"></div>
+<!-- <div id="success"></div> -->
 <div class="surveys form">
 <?php echo $this->Form->create('Survey'); ?>
 	<fieldset>
@@ -47,12 +47,9 @@ echo $this->Form->input('title', ['id' => 'title']);
 ?>
 	</fieldset>
 <?php //echo $this->Form->end(__('Submit')); ?>
-<?php echo $this->Js->submit('Submit JS',
-    [
-        'before' => $this->Js->get('#sending')->effect('fadeIn'),
-        'success' => $this->Js->get('#sending')->effect('fadeOut'),
-        'update' => '#success',
-    ]); ?>
+<?php
+//echo $this->Js->submit('Submit',['id' => 'submit',]); ?>
+<button type="button" id="submit">Submit</button>
 </div>
 
 <div id="sending" style="display: none;"> Sending...</div>
