@@ -3,14 +3,19 @@ $(document).ready(function() {
 	// console.log(qid);
 
 	let answerIndex = $("input[name='answer']:checked").val();
-	console.log(answerIndex);
-
+	// console.log(answerIndex);
+	let nextQ;
 	$.ajax({
 		type: "GET",
-		url: "/SurveyManagement/cakephp/questions/getNextQuestion/" + qid + '/' + answerIndex,
+		url:
+			"/SurveyManagement/cakephp/questions/getNextQuestion/" +
+			qid +
+			"/" +
+			answerIndex,
 		// data: {id: qid},
 		success: function(response) {
-			alert(response);
+			// alert(response);
+			nextQ = response;
 		}
 	});
 });
