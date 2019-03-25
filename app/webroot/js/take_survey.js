@@ -14,7 +14,7 @@ $(document).ready(function() {
 		success: function(nextQ) {
 			if (nextQ.length != 0) {
 				// $("form").append('<button type="button" id="prv">Previous</button>');
-				console.log(nextQ);
+				// console.log(nextQ);
 
 				$("#fset").append('<button type="button" id="nxt">Next</button>');
 				$("#nxt").click(() => {
@@ -44,16 +44,48 @@ $(document).ready(function() {
 								$("#nxt")
 									.attr("id", "submit")
 									.off("click")
-									.text("Submit").click(function () {
-										console.log(answers)
+									.text("Submit")
+									.click(function() {
+										// console.log(answers)
+										answers.forEach(function(ans) {
+											$.ajax({
+												type: "POST",
+												url: "/SurveyManagement/cakephp/answers/add",
+												dataType: "json",
+												data: ans,
+												success: function(response) {
+													// console.log("answers", answers);
+													// console.log("resp", response);
+												}
+											});
+										});
+										window.location = "/SurveyManagement/cakephp/surveys";
 									});
 							}
 						}
 					});
 				});
 			} else {
-				//this is the last question
-				// $(".form").append('<button type="button" id="submit">Submit</button>');
+				//this is the only question
+				$("#fset").append('<button type="button" id="submit">Submit</button>');
+				$("#submit").click(function() {
+					// console.log(answers)
+					$.ajax({
+						type: "POST",
+						url: "/SurveyManagement/cakephp/answers/add",
+						dataType: "json",
+						data: {
+							qid: $(".q").attr("id"),
+							answer: $("input[name='answer']:checked").val() == 0 ? "y" : "n",
+							notes: $(".note").val()
+						},
+						success: function(response) {
+							// console.log("answers", answers);
+							// console.log("resp", response);
+						}
+					});
+					window.location = "/SurveyManagement/cakephp/surveys";
+				});
 			}
 		}
 	});

@@ -49,6 +49,6 @@ echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => '
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php //echo $this->Html->link(__('New User'), array('action' => 'register')); ?></li>
+		<li><?php echo $this->Html->link(__('Answered Surveys'), array('controller' => 'surveys', 'action' => 'index')); ?></li>
 	</ul>
 </div>

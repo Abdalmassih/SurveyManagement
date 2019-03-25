@@ -3,11 +3,12 @@
 	<fieldset>
 		<legend><?php echo __('Add User'); ?></legend>
 	<?php
-		echo $this->Form->input('username');
-		echo $this->Form->input('password');
-		echo $this->Form->input('type');
-		echo $this->Form->input('email');
-	?>
+echo $this->Form->input('username');
+echo $this->Form->input('password');
+// echo $this->Form->input('type');
+echo $this->Form->input('email');
+echo $this->Form->input('Admin', array('type' => 'checkbox'));
+?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>

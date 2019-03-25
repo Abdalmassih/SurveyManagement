@@ -24,16 +24,6 @@ class Answer extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'answer' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
 		'user_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
@@ -44,6 +34,10 @@ class Answer extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'user_question' => array(
+			'rule' => array('isUnique', array('user_id', 'question_id'), false),
+			'message' => 'You have already taken this survey!'
+		)
 	);
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
