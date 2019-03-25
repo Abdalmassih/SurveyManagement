@@ -119,9 +119,19 @@ class SurveysController extends AppController
         }
         $options = array('conditions' => array('Survey.' . $this->Survey->primaryKey => $id));
         $this->set('survey', $this->Survey->find('first', $options));
-	}
+    }
 
-	public function delete($id = null)
+    public function take($id)
+    {
+        if (!$this->Survey->exists($id)) {
+            throw new NotFoundException(__('Survey not found'));
+        }
+
+        $options = array('conditions' => array('Question.survey_id' => $id, 'Question.parent_q_id' => null));
+        $this->set('q', $this->Survey->Question->find('first', $options));
+    }
+
+    public function delete($id = null)
     {
         if (!$this->Survey->exists($id)) {
             throw new NotFoundException(__('Invalid Survey'));

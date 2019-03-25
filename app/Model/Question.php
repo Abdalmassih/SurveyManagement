@@ -52,13 +52,13 @@ class Question extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'ParentQ' => array(
-			'className' => 'Question',
-			'foreignKey' => 'parent_q_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
+		// 'ParentQ' => array(
+		// 	'className' => 'Question',
+		// 	'foreignKey' => 'parent_q_id',
+		// 	'conditions' => '',
+		// 	'fields' => '',
+		// 	'order' => ''
+		// )
 	);
 
 /**
