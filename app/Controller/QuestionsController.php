@@ -23,7 +23,10 @@ class QuestionsController extends AppController
             'Question.parent_q_id' => $id,
             'Question.on_yes_no' => $answerIndex == 0 ? "y" : "n",
         ));
-        return json_encode($this->Question->find('first', $options));
+        $q = $this->Question->find('first', $options);
+        if (isset($q['Question'])) {
+            return json_encode($q['Question']);
+        }
     }
 
 /**

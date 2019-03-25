@@ -1,10 +1,10 @@
 <?php echo $this->Html->script('take_survey'); ?>
 
 
-<div class="surveys form">
+<div class="container">
 <?php echo $this->Form->create('Survey'); ?>
-	<fieldset>
-		<legend><?php echo __('Take Survey'); ?></legend>
+	<fieldset id="fset">
+		<legend><?php echo __($q['Survey']['title']); ?></legend>
 	<?php
 echo $this->Form->input('Question', ['id' => $q['Question']['id'], 'class' => 'q', 'value' => $q['Question']['question'], 'disabled']);
 
@@ -16,7 +16,8 @@ echo $this->Form->input('Answer', array(
     'default' => 0,
 ));
 ?>
+
 	</fieldset>
-<!-- <button type="button" id="nxt">Next</button>
-<button type="button" id="prv">Previous</button> -->
+<textarea name="note" class="note" cols="5" rows="10" placeholder="Add your note here..."></textarea>
+<button type="button" id="add-note">New Note</button>
 </div>
