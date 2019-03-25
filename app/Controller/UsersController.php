@@ -34,9 +34,7 @@ class UsersController extends AppController
     public function logout()
     {
         $this->Auth->logout();
-        return $this->redirect(array('action' => 'index'));
-
-        // $this->redirect('/login');
+        return $this->redirect(array('action' => 'login'));
     }
 /**
  * index method
@@ -92,7 +90,7 @@ class UsersController extends AppController
 
         //if already logged in, redirect to home
         if ($this->Auth->user()) {
-            return $this->redirect(array('action' => 'home'));
+            return $this->redirect(array('action' => 'index'));
 
         }
     }

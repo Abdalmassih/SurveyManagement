@@ -22,6 +22,53 @@ class SurveysController extends AppController
             return $this->redirect(array('controller' => 'users', 'action' => 'login'));
         }
 
+        if ($this->Auth->user('type') == "normal") {
+
+            //get and exclude surveys already answered by current user
+            $alreadyAnsweredSurveys = $this->Survey->Question->find('all', array(
+                'joins' => array(
+                    array(
+                        'alias' => 'Answer',
+                        'table' => 'answers',
+                        'type' => 'INNER',
+                        'conditions' => '`Question`.`id` = `Answer`.`question_id`',
+                    ),
+                ),
+                'conditions' => array('Answer.user_id' => $this->Auth->user('id')),
+
+            ));
+
+            $excludedSurveysIds = array_unique(array_map(function ($s) {
+                return $s['Survey']['id'];
+            }, $alreadyAnsweredSurveys));
+
+            $this->Paginator->settings = [
+                'conditions' => ["NOT" => ['Survey.id' => $excludedSurveysIds]],
+            ];
+        } else { //user type admin
+            //get only surveys already answered by normal users
+            $alreadyAnsweredSurveys = $this->Survey->Question->find('all', array(
+                'joins' => array(
+                    array(
+                        'alias' => 'Answer',
+                        'table' => 'answers',
+                        'type' => 'INNER',
+                        'conditions' => '`Question`.`id` = `Answer`.`question_id`',
+                    ),
+                ),
+                // 'conditions' => array('Answer.user_id' => $this->Auth->user('id')),
+
+            ));
+
+            $answeredSurveysIds = array_unique(array_map(function ($s) {
+                return $s['Survey']['id'];
+            }, $alreadyAnsweredSurveys));
+
+            $this->Paginator->settings = [
+                'conditions' => ["Survey.id IN" => $answeredSurveysIds],
+            ];
+        }
+
         $this->Survey->recursive = 0;
         $this->set('surveys', $this->Paginator->paginate());
     }
@@ -72,6 +119,20 @@ class SurveysController extends AppController
         }
         $options = array('conditions' => array('Survey.' . $this->Survey->primaryKey => $id));
         $this->set('survey', $this->Survey->find('first', $options));
+	}
+
+	public function delete($id = null)
+    {
+        if (!$this->Survey->exists($id)) {
+            throw new NotFoundException(__('Invalid Survey'));
+        }
+        $this->request->allowMethod('post', 'delete');
+        if ($this->Survey->delete($id)) {
+            $this->Flash->success(__('The survey has been deleted.'));
+        } else {
+            $this->Flash->error(__('The survey could not be deleted. Please, try again.'));
+        }
+        return $this->redirect(array('action' => 'index'));
     }
 
     public function saveChildQs($q, $parentQId)
