@@ -16,7 +16,9 @@ $(document).ready(function() {
 				// $("form").append('<button type="button" id="prv">Previous</button>');
 				// console.log(nextQ);
 
-				$("#fset").append('<button type="button" id="nxt">Next</button>');
+				$("#fset").append(
+					'<button type="button" class="btn btn-primary btn-lg" style="margin: 10px;" id="nxt">Next</button>'
+				);
 				$("#nxt").click(() => {
 					answers.push({
 						qid: $(".q").attr("id"),
@@ -67,7 +69,9 @@ $(document).ready(function() {
 				});
 			} else {
 				//this is the only question
-				$("#fset").append('<button type="button" id="submit">Submit</button>');
+				$("#fset").append(
+					'<button type="button" class="btn btn-primary btn-lg" style="margin: 10px;" id="submit">Submit</button>'
+				);
 				$("#submit").click(function() {
 					// console.log(answers)
 					$.ajax({

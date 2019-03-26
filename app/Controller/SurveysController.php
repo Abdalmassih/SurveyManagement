@@ -124,28 +124,32 @@ class SurveysController extends AppController
     public function view($params = null)
     {
 
-		//check user type admin
+        //check user type admin
         if (!in_array($this->Auth->user('type'), ['admin', 'root'])) {
-			return $this->redirect(array('action' => 'index'));
+            return $this->redirect(array('action' => 'index'));
         }
-		$id = explode("|", $params)[0];
-		$answeringUserId = explode("|", $params)[1];
+        $id = explode("|", $params)[0];
+        $answeringUserId = explode("|", $params)[1];
 
         if (!$this->Survey->exists($id)) {
             throw new NotFoundException(__('Invalid survey'));
-		}
+        }
 
-		$options = array('conditions' => array(
+        $options = array('conditions' => array(
             'Question.survey_id' => $id,
             'Answer.user_id' => $answeringUserId,
         ));
-		$this->set('answers', $this->Survey->Question->Answer->find('all', $options));
+        $this->set('answers', $this->Survey->Question->Answer->find('all', $options));
 
         $this->set('survey', $this->Survey->find('first', array('conditions' => array('Survey.' . $this->Survey->primaryKey => $id))));
     }
 
     public function take($id)
     {
+        if (in_array($this->Auth->user('type'), ['admin', 'root'])) {
+            return $this->redirect(array('action' => 'index'));
+        }
+
         if (!$this->Survey->exists($id)) {
             throw new NotFoundException(__('Survey not found'));
         }
