@@ -45,6 +45,10 @@ class SurveysController extends AppController
             $this->Paginator->settings = [
                 'conditions' => ["NOT" => ['Survey.id' => $excludedSurveysIds]],
             ];
+
+            $this->Survey->recursive = 0;
+            $this->set('surveys', $this->Paginator->paginate());
+
         } else { //user type admin
             //get only surveys already answered by normal users
             $alreadyAnsweredSurveys = $this->Survey->Question->find('all', array(
@@ -56,21 +60,26 @@ class SurveysController extends AppController
                         'conditions' => '`Question`.`id` = `Answer`.`question_id`',
                     ),
                 ),
-                // 'conditions' => array('Answer.user_id' => $this->Auth->user('id')),
-
             ));
 
-            $answeredSurveysIds = array_unique(array_map(function ($s) {
-                return $s['Survey']['id'];
-            }, $alreadyAnsweredSurveys));
+            $answeredSurveys = array_map(function ($s) {
 
-            $this->Paginator->settings = [
-                'conditions' => ["Survey.id IN" => $answeredSurveysIds],
-            ];
+                $answeringUser = $this->Survey->Question->Answer->find('first', [
+                    'conditions' => "`Answer`.`id` = " . $s['Answer'][0]['id'],
+
+                ]);
+
+                return
+                    [
+                    'survey' => $s['Survey'],
+                    'answering_user' => $answeringUser['User'],
+                ];
+            }, $alreadyAnsweredSurveys);
+
+            $this->set('surveys', array_unique($answeredSurveys, SORT_REGULAR));
+            $this->render('answered_surveys');
+
         }
-
-        $this->Survey->recursive = 0;
-        $this->set('surveys', $this->Paginator->paginate());
     }
 
     public function add()
@@ -114,6 +123,12 @@ class SurveysController extends AppController
 
     public function view($id = null)
     {
+
+        //check user type admin
+        if (!in_array($this->Auth->user('type'), ['admin', 'root'])) {
+            return $this->redirect(array('action' => 'index'));
+        }
+
         if (!$this->Survey->exists($id)) {
             throw new NotFoundException(__('Invalid survey'));
         }
