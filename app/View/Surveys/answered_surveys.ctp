@@ -2,6 +2,7 @@
 print_r($surveys);
 echo "</pre>"; ?> -->
 
+<?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?>
 
 <h2>Taken Surveys</h2>
 

@@ -52,7 +52,7 @@ echo $this->Form->input('title', ['id' => 'title']);
 <button type="button" id="submit">Submit</button>
 </div>
 
-<div id="sending" style="display: none;"> Sending...</div>
+<!-- <div id="sending" style="display: none;"> Sending...</div> -->
 
 <!-- <div style="clear: both; height: 1%;"></div> -->
 

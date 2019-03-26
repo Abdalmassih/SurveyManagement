@@ -51,8 +51,7 @@ $(document).ready(function() {
 				data => {
 					// alert(JSON.parse(data).survey_id);
 					window.location =
-						"/SurveyManagement/cakephp/surveys/view/" +
-						JSON.parse(data).survey_id;
+						"/SurveyManagement/cakephp/surveys" //+ JSON.parse(data).survey_id;
 				}
 			);
 
