@@ -38,6 +38,6 @@ class AppController extends Controller
         'Session', 'Auth', 'Flash', 'RequestHandler',
     ];
 
-    // public $theme = "Cakestrap";
+    public $theme = "Cakestrap";
 
 }

@@ -2,9 +2,11 @@
 <?php echo $this->Html->script('jquery.hortree'); ?>
 <?php echo $this->Html->script('jquery.line'); ?>
 <?php echo $this->Html->css('jquery.hortree'); ?>
-
 <div id="questions" style="z-index: -1;"></div>
 <br>
+<div id="page-container" class="row">
+
+
 
 <div class="qform"
 	 style="
@@ -37,35 +39,41 @@ margin-right:auto;
 </div>
 
 
-<!-- <div id="success"></div> -->
-<div class="surveys form">
-<?php echo $this->Form->create('Survey'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Survey'); ?></legend>
-	<?php
-echo $this->Form->input('title', ['id' => 'title']);
-?>
-	</fieldset>
-<?php //echo $this->Form->end(__('Submit')); ?>
-<?php
-//echo $this->Js->submit('Submit',['id' => 'submit',]); ?>
-<button type="button" id="submit">Submit</button>
-</div>
+	<div id="sidebar" class="col-sm-3">
 
-<!-- <div id="sending" style="display: none;"> Sending...</div> -->
+		<div class="actions">
 
-<!-- <div style="clear: both; height: 1%;"></div> -->
+			<ul class="list-group">
+				<li class="list-group-item"><?php echo $this->Html->link(__('List Surveys'), array('action' => 'index')); ?></li>
+			</ul><!-- /.list-group -->
+
+		</div><!-- /.actions -->
+
+	</div><!-- /#sidebar .col-sm-3 -->
+
+	<div id="page-content" class="col-sm-9">
+
+		<h2><?php echo __('Add Survey'); ?></h2>
+
+		<div class="surveys form">
+
+			<?php echo $this->Form->create('Survey', array('role' => 'form')); ?>
+
+				<fieldset>
+
+					<div class="form-group">
+						<?php echo $this->Form->input('title', array('class' => 'form-control', 'id'=> 'title')); ?>
+					</div><!-- .form-group -->
 
 
+					<button type="button" id="submit" class="btn btn-large btn-primary">Submit</button>
 
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+				</fieldset>
 
-		<li><?php echo $this->Html->link(__('List Surveys'), array('action' => 'index')); ?></li>
+			<?php echo $this->Form->end(); ?>
 
-	</ul>
-</div>
+		</div><!-- /.form -->
 
-<!-- <button id="addQ">Add Question</button> -->
+	</div><!-- /#page-content .col-sm-9 -->
 
+</div><!-- /#page-container .row-fluid -->

@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	// alert('test!');
 
+		$(".navbar").hide();
+
 	//title validation
 	$("#title").blur(() => {
 		$.post(
