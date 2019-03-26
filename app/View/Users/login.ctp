@@ -9,4 +9,4 @@ echo $this->Form->end('Login');
 
 ?>
 
-No account? <?php echo $this->Html->link('Register Now!', array('action' => 'register')); ?>
+No account? <?php echo $this->Html->link('Register Now!', array('action' => 'register', 'class'=>"btn btn-primary")); ?>

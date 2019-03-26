@@ -37,4 +37,7 @@ class AppController extends Controller
     public $components = [
         'Session', 'Auth', 'Flash', 'RequestHandler',
     ];
+
+    // public $theme = "Cakestrap";
+
 }
