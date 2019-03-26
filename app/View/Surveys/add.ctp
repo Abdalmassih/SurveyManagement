@@ -8,35 +8,70 @@
 
 
 
-<div class="qform"
-	 style="
+
+
+
+<div class="card qform"
+style="
     width: 80%;
     padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 	display: none;
 	position:absolute;
 	left:0;
-right:0;
-margin-left:auto;
-margin-right:auto;
-  top: 50px;
-  background-color: powderblue;
+	right:0;
+	margin-left:auto;
+	margin-right:auto;
+	top: 50px;
+	background-color: powderblue;
 	z-index: 100;
 	">
-    <button id="qform-close" class="btn btn-danger" style="float: right; height: 20px; width: 20px">&times;</button>
-    <form action="/action_page.php">
-        Question:<br>
-        <textarea id="qtext" placeholder="Enter a question..." autofocus></textarea>
-        <br><br>
-        Next Question on "YES":<br>
-        <textarea id="yq" placeholder="Enter a &quot;YES&quot; question..."></textarea>
-        <br><br>
-        Next Question on "NO":<br>
-        <textarea  id="nq" placeholder="Enter a &quot;NO&quot; question..."></textarea>
-        <br><br><br>
-        <input type="button" id="save-q" value="Save">
-    </form>
+
+    <h3 class="card-header info-color white-text text-center py-4">
+        <strong>Enter Question Info</strong>
+    </h3> <br>
+
+    <!--Card content-->
+    <div class="card-body px-lg-5">
+
+        <!-- Form -->
+        <form class="text-center" style="color: #757575;">
+
+            <!-- Name -->
+            <div class="md-form mt-3">
+                <label for="qtext">Question</label>
+			<textarea class="form-control" id="qtext" cols="150" rows="3" placeholder="Enter a question..." autofocus></textarea>
+            </div> <br>
+            <div class="md-form mt-3">
+                <label for="qtext">Next question on "YES"</label>
+			<textarea class="form-control" cols="150" rows="3"id="yq" placeholder="Enter a &quot;YES&quot; question..."></textarea>
+            </div> <br>
+            <div class="md-form mt-3">
+                <label for="qtext">Next question on "NO"</label>
+			<textarea class="form-control" cols="150" rows="3"id="nq" placeholder="Enter a &quot;NO&quot; question..."></textarea>
+            </div>
+
+<br>
+            <button class="form-control btn btn-rounded btn-primary btn-lg align-middle" style="width: 10%; vertical-align: middle;" type="button" id="save-q">Save</button>
+
+            <button class="form-control btn btn-rounded btn-danger btn-lg align-middle" id="qform-close" style="width: 10%; vertical-align: middle;" type="button">Cancel</button>
+
+        </form>
+        <!-- Form -->
+
+    </div>
+
 </div>
+<!-- Material form subscription -->
+
+
+
+
+
+
+
+
+
 
 
 	<div id="sidebar" class="col-sm-3">
@@ -62,7 +97,7 @@ margin-right:auto;
 				<fieldset>
 
 					<div class="form-group">
-						<?php echo $this->Form->input('title', array('class' => 'form-control', 'id'=> 'title')); ?>
+						<?php echo $this->Form->input('title', array('class' => 'form-control', 'id' => 'title')); ?>
 					</div><!-- .form-group -->
 
 

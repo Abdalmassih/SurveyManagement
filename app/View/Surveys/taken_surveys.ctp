@@ -8,6 +8,7 @@
 <ul class="list-group">
 	<li class="list-group-item"><?php echo $this->Html->link(__('List Surveys'), array('controller' => 'surveys', 'action' => 'index'), array('class' => '')); ?></li>
 	<li class="list-group-item"><?php echo $this->Html->link(__('New Survey'), array('controller' => 'surveys', 'action' => 'add'), array('class' => '')); ?></li>
+	<li class="list-group-item"><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?></li>
 </ul><!-- /.list-group -->
 
 </div><!-- /.actions -->

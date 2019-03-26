@@ -23,6 +23,7 @@ class UsersController extends AppController
 
     public function login()
     {
+
         if ($this->Auth->login()) {
             return $this->redirect($this->Auth->redirectUrl());
         }
@@ -64,6 +65,9 @@ class UsersController extends AppController
  */
     public function view($id = null)
     {
+		if ($this->Auth->user('type') == 'normal') {
+            return $this->redirect(array('controller' => 'surveys', 'action' => 'index'));
+        }
         if (!$this->User->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         }

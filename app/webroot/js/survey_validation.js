@@ -61,6 +61,13 @@ $(document).ready(function() {
 			// 	window.location = "/SurveyManagement/cakephp/surveys";
 			//   }});
 		}
+		else {
+			$.post(
+				"/SurveyManagement/cakephp/surveys/validateForm",
+				{ field: $("#title").attr("id"), value: $("#title").val() },
+				validateTitle
+			);
+		}
 	});
 
 	function renderTree(questions) {
