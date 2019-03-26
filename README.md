@@ -3,13 +3,6 @@
 — A demo PHP Survey Management web app built with CakePHP framework (version 2.x), jQuery JavaScript library and Bootstrap4 frontend framework
 
 
->> Attached files:
-
-* DB dump file: surveys.sql
-
-* ERD Model: Surveys ERD.png
-
-
 >> Installation:
 
 * clone from GitHub
