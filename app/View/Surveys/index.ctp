@@ -6,7 +6,7 @@
 	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('title'); ?></th>
-			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
+			<th><?php echo $this->Paginator->sort('Added By'); ?></th>
 			<!-- <th class="actions"><?php echo __('Actions'); ?></th> -->
 	</tr>
 	</thead>

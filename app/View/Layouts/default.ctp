@@ -36,6 +36,7 @@ echo $this->fetch('css');
 echo $this->fetch('script');
 
 echo $this->Html->script('jquery'); // Include jQuery library
+echo $this->Html->script('bootstrap.min');
 
 ?>
 
@@ -54,7 +55,7 @@ echo $this->Html->script('jquery'); // Include jQuery library
 
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
-	<?php echo $this->Js->writeBuffer(); // Write cached scripts   ?>
+	<!-- <?php echo $this->element('sql_dump'); ?> -->
+	<?php echo $this->Js->writeBuffer(); // Write cached scripts     ?>
 </body>
 </html>
