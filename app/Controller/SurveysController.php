@@ -77,7 +77,7 @@ class SurveysController extends AppController
             }, $alreadyAnsweredSurveys);
 
             $this->set('surveys', array_unique($answeredSurveys, SORT_REGULAR));
-            $this->render('answered_surveys');
+            $this->render('taken_surveys');
 
         }
     }

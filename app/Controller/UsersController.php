@@ -23,9 +23,9 @@ class UsersController extends AppController
 
     public function login()
     {
-		if ($this->Auth->login()) {
-			return $this->redirect($this->Auth->redirectUrl());
-		}
+        if ($this->Auth->login()) {
+            return $this->redirect($this->Auth->redirectUrl());
+        }
         if ($this->request->is('post')) {
 
             $this->Session->setFlash('Invalid Username or Password!');
@@ -44,6 +44,13 @@ class UsersController extends AppController
  */
     public function index()
     {
+
+        if (!$this->Auth->user('id')) {
+            return $this->redirect(array('action' => 'register'));
+        }
+        if ($this->Auth->user('type') == 'normal') {
+            return $this->redirect(array('controller' => 'surveys', 'action' => 'index'));
+        }
         $this->User->recursive = 0;
         $this->set('users', $this->Paginator->paginate());
     }
